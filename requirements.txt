@@ -1,1 +1,2 @@
 requests_html
+tqdm~=4.66.2
