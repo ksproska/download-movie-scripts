@@ -104,3 +104,5 @@ venv.bak/
 .mypy_cache/
 /scripts/
 /.idea/
+/imdb_top_1000.csv
+/imdb_top_1000.json
