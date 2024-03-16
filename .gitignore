@@ -105,4 +105,4 @@ venv.bak/
 /scripts/
 /.idea/
 /imdb_top_1000.csv
-/imdb_top_1000.json
+/movie_data/
