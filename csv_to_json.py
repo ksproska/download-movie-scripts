@@ -68,6 +68,7 @@ def csv_to_json(csv_file_path, jsons_dir):
         row['Stars'] = stars
 
     filenames = [x.replace(".txt", "") for x in os.listdir('./scripts')]
+    used_filenames = []
 
     movies_without_scripts = []
     for row in data:
@@ -81,12 +82,11 @@ def csv_to_json(csv_file_path, jsons_dir):
             most_similar_string, similarity_score = sorted_list[0]
             if similarity_score > 80:
                 row['Script_filename'] = f"{most_similar_string}.txt"
+                used_filenames.append(f"{most_similar_string}.txt")
             else:
                 movies_without_scripts.append(row['Title'])
 
     print(len(movies_without_scripts), "/", len(data))
-    pprint(movies_without_scripts)
-    pprint(filenames)
 
     # Write JSON file
     for i, row in enumerate(data):
@@ -98,6 +98,14 @@ def csv_to_json(csv_file_path, jsons_dir):
                 row['Script'] = "".join(lines).replace('"', '\"')
         with open(jsons_dir + f'/movie_{i}{with_script}.json', 'w') as json_file:
             json.dump(row, json_file, indent=4)
+
+    unused_filenames = [f for f in filenames if f"{f}.txt" not in used_filenames]
+    for i, filename in enumerate(unused_filenames):
+        with open(f'./scripts/{filename}.txt', 'r') as script:
+            lines = script.readlines()
+            script_data = {'Title': filename, 'Script': "".join(lines).replace('"', '\"')}
+            with open(f"{jsons_dir}/script_{i}.json", 'w') as f:
+                json.dump(script_data, f, indent=4)
 
 
 # Example usage
